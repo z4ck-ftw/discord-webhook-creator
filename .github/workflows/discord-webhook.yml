@@ -1,0 +1,43 @@
+name: Moon Development Announcement
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+jobs:
+  send-webhook:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Send Discord Webhook
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+        run: |
+          curl -X POST "$DISCORD_WEBHOOK" \
+            -H "Content-Type: application/json" \
+            -d '{
+              "username": "Moon Development",
+              "embeds": [{
+                "title": "Moon Development",
+                "description": "## We’re Building Our Engineering Team\n\nMoon Development is expanding its engineering team and is looking for talented developers and technical creatives ready to contribute to meaningful projects and grow with our team.",
+                "fields": [
+                  {
+                    "name": "Open Opportunities",
+                    "value": "**Software Engineering**\n• JavaScript / Node.js Developers\n• Discord Application Developers\n• Minecraft Developers\n• Open.MP / SA-MP Developers\n• Web Developers\n\n**Design & Product**\n• UI/UX Designers\n• Creative Developers"
+                  },
+                  {
+                    "name": "What We Look For",
+                    "value": "• Strong technical fundamentals\n• Clean and maintainable code\n• Problem-solving ability\n• Team collaboration\n• Professional communication\n• Ownership and reliability"
+                  },
+                  {
+                    "name": "How to Apply",
+                    "value": "**Submit your application through the Moon Development Recruitment Ticket.**\n\nInclude your name, desired role, technical skills, experience, GitHub/portfolio, previous projects, and why you want to join Moon Development."
+                  }
+                ],
+                "footer": {
+                  "text": "Moon Development • Engineering ideas into reality."
+                }
+              }]
+            }'
